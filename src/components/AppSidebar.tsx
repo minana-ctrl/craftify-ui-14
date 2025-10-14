@@ -2,14 +2,11 @@ import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   FolderKanban,
-  FileText,
-  Receipt,
+  DollarSign,
   BarChart3,
   Video,
-  Package,
   Users,
   Settings,
-  HelpCircle,
   LogOut,
   Anchor,
 } from "lucide-react";
@@ -31,17 +28,14 @@ import { Separator } from "@/components/ui/separator";
 const mainNav = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Projects", url: "/projects", icon: FolderKanban },
-  { title: "Quotes", url: "/quotes", icon: FileText },
-  { title: "Invoices", url: "/invoices", icon: Receipt },
-  { title: "Reports", url: "/reports", icon: BarChart3 },
-  { title: "Videos", url: "/videos", icon: Video },
-  { title: "Materials", url: "/materials", icon: Package },
+  { title: "Financials", url: "/financials", icon: DollarSign },
+  { title: "Resources", url: "/resources", icon: Video },
   { title: "Team", url: "/team", icon: Users },
+  { title: "Reports", url: "/reports", icon: BarChart3 },
 ];
 
 const bottomNav = [
   { title: "Settings", url: "/settings", icon: Settings },
-  { title: "Help", url: "/help", icon: HelpCircle },
 ];
 
 export function AppSidebar() {
