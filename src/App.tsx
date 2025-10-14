@@ -11,6 +11,7 @@ import Resources from "./pages/Resources";
 import Reports from "./pages/Reports";
 import Team from "./pages/Team";
 import Settings from "./pages/Settings";
+import Timesheet from "./pages/Timesheet";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 
@@ -29,6 +30,7 @@ const App = () => (
           <Route path="/financials" element={<Layout><Financials /></Layout>} />
           <Route path="/resources" element={<Layout><Resources /></Layout>} />
           <Route path="/team" element={<Layout><Team /></Layout>} />
+          <Route path="/timesheet" element={<Layout><Timesheet /></Layout>} />
           <Route path="/reports" element={<Layout><Reports /></Layout>} />
           <Route path="/settings" element={<Layout><Settings /></Layout>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

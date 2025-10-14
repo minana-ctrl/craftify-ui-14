@@ -9,6 +9,7 @@ import {
   Settings,
   LogOut,
   Anchor,
+  Clock,
 } from "lucide-react";
 import {
   Sidebar,
@@ -28,6 +29,7 @@ import { Separator } from "@/components/ui/separator";
 const mainNav = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Projects", url: "/projects", icon: FolderKanban },
+  { title: "Timesheet", url: "/timesheet", icon: Clock },
   { title: "Financials", url: "/financials", icon: DollarSign },
   { title: "Resources", url: "/resources", icon: Video },
   { title: "Team", url: "/team", icon: Users },
