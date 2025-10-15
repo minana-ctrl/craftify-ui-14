@@ -22,20 +22,26 @@ export function StatCard({ title, value, icon: Icon, trend, variant = "default" 
   };
 
   return (
-    <Card className={cn("shadow-md transition-all hover:shadow-lg", variantClasses[variant])}>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
+    <Card className={cn(
+      "shadow-lg transition-all hover:shadow-elevated hover:-translate-y-1 border-border/60 overflow-hidden group",
+      variantClasses[variant]
+    )}>
+      <CardHeader className="flex flex-row items-center justify-between pb-2 bg-gradient-subtle">
         <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}
         </CardTitle>
-        <Icon className="h-4 w-4 text-muted-foreground" />
+        <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
+          <Icon className="h-4 w-4 text-primary" />
+        </div>
       </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
+      <CardContent className="pt-4">
+        <div className="text-3xl font-bold group-hover:text-primary transition-colors">{value}</div>
         {trend && (
           <p className={cn(
-            "text-xs mt-1",
+            "text-xs mt-2 font-medium flex items-center gap-1",
             trend.positive ? "text-status-success" : "text-status-error"
           )}>
+            <span>{trend.positive ? "↗" : "↘"}</span>
             {trend.positive ? "+" : ""}{trend.value}
           </p>
         )}

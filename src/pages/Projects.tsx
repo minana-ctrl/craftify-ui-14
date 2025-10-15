@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { StatusBadge } from "@/components/StatusBadge";
+import { cn } from "@/lib/utils";
 import { 
   Search, 
   Filter, 
@@ -13,11 +15,11 @@ import {
   Clock,
   Camera,
   FileText,
-  CalendarClock,
-  Wrench,
-  User
+  Eye,
+  Package,
+  User,
+  Calendar
 } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const Projects = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -86,14 +88,16 @@ const Projects = () => {
   ];
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Projects</h1>
-          <p className="text-muted-foreground">Manage boat maintenance and repair projects</p>
+          <h1 className="text-3xl font-bold tracking-tight bg-gradient-ocean bg-clip-text text-transparent">
+            Projects
+          </h1>
+          <p className="text-muted-foreground mt-1">Manage boat maintenance and repair projects</p>
         </div>
-        <Button className="gap-2">
+        <Button className="gap-2 hover-glow shadow-md">
           <Plus className="h-4 w-4" />
           New Project
         </Button>
@@ -107,110 +111,117 @@ const Projects = () => {
             placeholder="Search projects, clients, or locations..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-10 bg-card shadow-sm"
           />
         </div>
-        <Button variant="outline" className="gap-2">
+        <Button variant="outline" className="gap-2 shadow-sm">
           <Filter className="h-4 w-4" />
           Filter
         </Button>
       </div>
 
       {/* Projects Grid */}
-      <div className="grid gap-6">
-        {projects.map((project) => (
-          <Card key={project.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-            <CardContent className="p-6">
-              <div className="space-y-4">
-                {/* Header Row */}
-                <div className="flex items-start justify-between">
-                  <div className="space-y-2 flex-1">
-                    <div className="flex items-center gap-3">
-                      <h3 className="text-xl font-semibold">{project.name}</h3>
-                      <StatusBadge status={project.status as any} />
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span className="flex items-center gap-1">
-                        <User className="h-3 w-3" />
-                        {project.client}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <MapPin className="h-3 w-3" />
-                        {project.location}
-                      </span>
-                      <span>Started {project.startDate}</span>
-                    </div>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {projects.map((project, index) => (
+          <Card 
+            key={project.id} 
+            className={cn(
+              "hover-lift overflow-hidden group border-border/60",
+              "animate-fade-in"
+            )}
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
+            <CardHeader className="pb-3 bg-gradient-subtle">
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-2 flex-1 min-w-0">
+                  <h3 className="text-lg font-semibold line-clamp-1 group-hover:text-primary transition-colors">
+                    {project.name}
+                  </h3>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <User className="h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate">{project.client}</span>
                   </div>
-                  <div className="text-right space-y-1">
-                    <p className="text-2xl font-bold text-primary">{project.budget}</p>
-                    <p className="text-sm text-muted-foreground">Total Budget</p>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <MapPin className="h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate">{project.location}</span>
                   </div>
                 </div>
+                <StatusBadge status={project.status as any} />
+              </div>
+            </CardHeader>
 
-                {/* Progress Bar */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Project Progress</span>
-                    <span className="font-medium">{project.progress}%</span>
+            <CardContent className="space-y-4 pt-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <DollarSign className="h-3.5 w-3.5" />
+                    <span>Budget</span>
                   </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-300"
-                      style={{ width: `${project.progress}%` }}
-                    />
-                  </div>
+                  <p className="text-sm font-semibold">{project.budget}</p>
                 </div>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Calendar className="h-3.5 w-3.5" />
+                    <span>Started</span>
+                  </div>
+                  <p className="text-sm font-semibold">{project.startDate}</p>
+                </div>
+              </div>
 
-                {/* Stats Row */}
-                <div className="grid grid-cols-4 gap-4 pt-2 border-t border-border">
-                  <div className="space-y-1">
-                    <p className="text-xs text-muted-foreground flex items-center gap-1">
-                      <Clock className="h-3 w-3" />
-                      Hours Logged
-                    </p>
-                    <p className="font-semibold">{project.hoursLogged} / {project.hoursEstimated}h</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-muted-foreground flex items-center gap-1">
-                      <Camera className="h-3 w-3" />
-                      Photos
-                    </p>
-                    <p className="font-semibold">{project.photos} uploaded</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-muted-foreground flex items-center gap-1">
-                      <CalendarClock className="h-3 w-3" />
-                      Last Timesheet
-                    </p>
-                    <p className="font-semibold">{project.lastTimesheet}</p>
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-xs text-muted-foreground">Assigned To</p>
-                    <Avatar className="h-6 w-6">
-                      <AvatarFallback className="text-xs">{project.assignee}</AvatarFallback>
-                    </Avatar>
-                  </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">Progress</span>
+                  <span className="font-medium">{project.progress}%</span>
                 </div>
+                <Progress value={project.progress} className="h-2" />
+              </div>
 
-                {/* Action Buttons */}
-                <div className="flex gap-2 pt-2">
-                  <Button size="sm" variant="outline" className="gap-2">
-                    <CalendarClock className="h-3 w-3" />
-                    Log Hours
-                  </Button>
-                  <Button size="sm" variant="outline" className="gap-2">
-                    <Camera className="h-3 w-3" />
-                    Add Photos
-                  </Button>
-                  <Button size="sm" variant="outline" className="gap-2">
-                    <Wrench className="h-3 w-3" />
-                    Materials
-                  </Button>
-                  <Button size="sm" className="gap-2 ml-auto">
-                    <FileText className="h-3 w-3" />
-                    View Details
-                  </Button>
+              <div className="grid grid-cols-3 gap-3 py-3 border-y border-border/50">
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mb-1">
+                    <Clock className="h-3.5 w-3.5" />
+                  </div>
+                  <p className="text-sm font-semibold">{project.hoursLogged}</p>
+                  <p className="text-xs text-muted-foreground">of {project.hoursEstimated}h</p>
                 </div>
+                <div className="text-center border-x border-border/50">
+                  <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mb-1">
+                    <Camera className="h-3.5 w-3.5" />
+                  </div>
+                  <p className="text-sm font-semibold">{project.photos}</p>
+                  <p className="text-xs text-muted-foreground">photos</p>
+                </div>
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground mb-1">
+                    <Package className="h-3.5 w-3.5" />
+                  </div>
+                  <p className="text-sm font-semibold">12</p>
+                  <p className="text-xs text-muted-foreground">items</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <User className="h-3.5 w-3.5" />
+                <span>{project.assignee}</span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 pt-2">
+                <Button size="sm" variant="outline" className="gap-1.5 hover-lift">
+                  <Clock className="h-3.5 w-3.5" />
+                  Log Hours
+                </Button>
+                <Button size="sm" variant="outline" className="gap-1.5 hover-lift">
+                  <Camera className="h-3.5 w-3.5" />
+                  Photos
+                </Button>
+                <Button size="sm" variant="outline" className="gap-1.5 hover-lift">
+                  <Package className="h-3.5 w-3.5" />
+                  Materials
+                </Button>
+                <Button size="sm" className="gap-1.5 bg-primary hover:bg-primary/90 hover-glow">
+                  <Eye className="h-3.5 w-3.5" />
+                  Details
+                </Button>
               </div>
             </CardContent>
           </Card>
