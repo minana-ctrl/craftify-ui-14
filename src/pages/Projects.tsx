@@ -20,9 +20,11 @@ import {
   User,
   Calendar
 } from "lucide-react";
+import { toast } from "sonner";
 
 const Projects = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterOpen, setFilterOpen] = useState(false);
 
   const projects = [
     { 
@@ -97,7 +99,7 @@ const Projects = () => {
           </h1>
           <p className="text-muted-foreground mt-1">Manage boat maintenance and repair projects</p>
         </div>
-        <Button className="gap-2 hover-glow shadow-md">
+        <Button className="gap-2 hover-glow shadow-md" onClick={() => toast.success("New project form opening...")}>
           <Plus className="h-4 w-4" />
           New Project
         </Button>
@@ -114,7 +116,14 @@ const Projects = () => {
             className="pl-10 bg-card shadow-sm"
           />
         </div>
-        <Button variant="outline" className="gap-2 shadow-sm">
+        <Button 
+          variant="outline" 
+          className="gap-2 shadow-sm"
+          onClick={() => {
+            setFilterOpen(!filterOpen);
+            toast.info(filterOpen ? "Filters closed" : "Filters opened");
+          }}
+        >
           <Filter className="h-4 w-4" />
           Filter
         </Button>
@@ -206,19 +215,50 @@ const Projects = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-2 pt-2">
-                <Button size="sm" variant="outline" className="gap-1.5 hover-lift">
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="gap-1.5 hover-lift"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toast.success(`Logging hours for ${project.name}`);
+                  }}
+                >
                   <Clock className="h-3.5 w-3.5" />
                   Log Hours
                 </Button>
-                <Button size="sm" variant="outline" className="gap-1.5 hover-lift">
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="gap-1.5 hover-lift"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toast.success(`Opening photos for ${project.name}`);
+                  }}
+                >
                   <Camera className="h-3.5 w-3.5" />
                   Photos
                 </Button>
-                <Button size="sm" variant="outline" className="gap-1.5 hover-lift">
+                <Button 
+                  size="sm" 
+                  variant="outline" 
+                  className="gap-1.5 hover-lift"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toast.success(`Managing materials for ${project.name}`);
+                  }}
+                >
                   <Package className="h-3.5 w-3.5" />
                   Materials
                 </Button>
-                <Button size="sm" className="gap-1.5 bg-primary hover:bg-primary/90 hover-glow">
+                <Button 
+                  size="sm" 
+                  className="gap-1.5 bg-primary hover:bg-primary/90 hover-glow"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toast.info(`Viewing details for ${project.name}`);
+                  }}
+                >
                   <Eye className="h-3.5 w-3.5" />
                   Details
                 </Button>

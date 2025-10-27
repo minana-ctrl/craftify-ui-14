@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StatCard } from "@/components/StatCard";
@@ -15,8 +16,12 @@ import {
   Plus
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  
   const stats = [
     { icon: Wrench, title: "Active Projects", value: "8", trend: { value: "+2 this week", positive: true } },
     { icon: Clock, title: "Hours This Week", value: "42.5", trend: { value: "12.5 pending", positive: false } },
@@ -47,7 +52,7 @@ const Dashboard = () => {
           </h1>
           <p className="text-muted-foreground mt-1">Here's what's happening with your boat care business today</p>
         </div>
-        <Button className="gap-2 hover-glow shadow-md" size="lg">
+        <Button className="gap-2 hover-glow shadow-md" size="lg" onClick={() => navigate("/projects")}>
           <Plus className="h-5 w-5" />
           Quick Start Project
         </Button>
@@ -77,7 +82,14 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent className="space-y-3 pt-6">
             {urgentTasks.map((task) => (
-              <div key={task.id} className="flex items-center justify-between p-4 rounded-lg border border-border/50 hover:bg-muted/30 hover:border-primary/30 transition-all group">
+              <div 
+                key={task.id} 
+                className="flex items-center justify-between p-4 rounded-lg border border-border/50 hover:bg-muted/30 hover:border-primary/30 transition-all group cursor-pointer"
+                onClick={() => {
+                  if (task.type === "timesheet") navigate("/timesheet");
+                  else toast.info(`Opening ${task.task}`);
+                }}
+              >
                 <div className="space-y-1 flex-1 min-w-0">
                   <p className="font-medium group-hover:text-primary transition-colors">{task.task}</p>
                   <p className="text-sm text-muted-foreground truncate">{task.project}</p>
@@ -93,7 +105,7 @@ const Dashboard = () => {
                 </div>
               </div>
             ))}
-            <Button variant="outline" className="w-full hover-lift">View All Tasks</Button>
+            <Button variant="outline" className="w-full hover-lift" onClick={() => navigate("/timesheet")}>View All Tasks</Button>
           </CardContent>
         </Card>
 
@@ -104,15 +116,16 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent className="space-y-2 pt-6">
             {[
-              { icon: CalendarClock, label: "Log Hours", color: "text-primary" },
-              { icon: FileText, label: "Create Quote", color: "text-accent" },
-              { icon: Camera, label: "Upload Photos", color: "text-status-info" },
-              { icon: Wrench, label: "Update Materials", color: "text-status-warning" },
+              { icon: CalendarClock, label: "Log Hours", color: "text-primary", action: () => navigate("/timesheet") },
+              { icon: FileText, label: "Create Quote", color: "text-accent", action: () => toast.success("Quote form opening...") },
+              { icon: Camera, label: "Upload Photos", color: "text-status-info", action: () => toast.success("Photo upload opening...") },
+              { icon: Wrench, label: "Update Materials", color: "text-status-warning", action: () => toast.success("Materials manager opening...") },
             ].map((action) => (
               <Button 
                 key={action.label}
                 variant="outline" 
                 className="w-full justify-start gap-2 hover-lift group"
+                onClick={action.action}
               >
                 <action.icon className={`h-4 w-4 ${action.color} group-hover:scale-110 transition-transform`} />
                 <span>{action.label}</span>
@@ -127,13 +140,17 @@ const Dashboard = () => {
         <CardHeader className="bg-gradient-subtle">
           <div className="flex items-center justify-between">
             <CardTitle>Recent Projects</CardTitle>
-            <Button variant="ghost" size="sm">View All</Button>
+            <Button variant="ghost" size="sm" onClick={() => navigate("/projects")}>View All</Button>
           </div>
         </CardHeader>
         <CardContent className="pt-6">
           <div className="space-y-3">
             {recentProjects.map((project) => (
-              <div key={project.id} className="flex items-center justify-between p-4 rounded-lg border border-border/50 hover:bg-muted/30 hover:border-primary/30 transition-all cursor-pointer group">
+              <div 
+                key={project.id} 
+                className="flex items-center justify-between p-4 rounded-lg border border-border/50 hover:bg-muted/30 hover:border-primary/30 transition-all cursor-pointer group"
+                onClick={() => navigate("/projects")}
+              >
                 <div className="space-y-1 flex-1 min-w-0">
                   <div className="flex items-center gap-3 flex-wrap">
                     <h3 className="font-semibold group-hover:text-primary transition-colors">{project.name}</h3>
