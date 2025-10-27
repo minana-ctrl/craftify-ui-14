@@ -10,6 +10,7 @@ import {
   Calendar,
   BarChart3,
 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 const reportTypes = [
   {
@@ -75,7 +76,7 @@ const recentReports = [
 
 export default function Reports() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Reports & Analytics</h1>
@@ -92,7 +93,7 @@ export default function Reports() {
             return (
               <Card
                 key={report.id}
-                className="group cursor-pointer shadow-md transition-all hover:shadow-lg"
+                className="group cursor-pointer hover-lift hover-glow transition-all animate-slide-up"
               >
                 <CardContent className="p-6">
                   <div className="flex items-start gap-4">
@@ -115,7 +116,7 @@ export default function Reports() {
                           {report.frequency}
                         </Badge>
                       </div>
-                      <Button className="mt-3 bg-primary hover:bg-primary-light w-full sm:w-auto">
+                      <Button className="mt-3 bg-primary hover:bg-primary-light w-full sm:w-auto" onClick={() => toast({ title: "📊 Generating", description: report.name })}>
                         Generate Report
                       </Button>
                     </div>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Video, FileText, Search, Upload, Play, Download, Eye } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 const Resources = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -26,7 +27,7 @@ const Resources = () => {
   ];
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Resources</h1>
@@ -57,7 +58,7 @@ const Resources = () => {
                 className="pl-10"
               />
             </div>
-            <Button className="gap-2">
+            <Button className="gap-2" onClick={() => toast({ title: "📹 Upload ready" })}>
               <Upload className="h-4 w-4" />
               Upload Video
             </Button>
@@ -65,7 +66,7 @@ const Resources = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {videos.map((video) => (
-              <Card key={video.id} className="hover:shadow-md transition-shadow overflow-hidden group">
+              <Card key={video.id} className="hover-lift hover-glow transition-all overflow-hidden group animate-slide-up cursor-pointer" onClick={() => toast({ title: "▶️ Playing", description: video.title })}>
                 <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-6xl relative">
                   {video.thumbnail}
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

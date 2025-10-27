@@ -14,6 +14,7 @@ import {
   Shield,
   MapPin,
 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 const teamMembers = [
   {
@@ -107,13 +108,13 @@ export default function Team() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Team Management</h1>
           <p className="text-muted-foreground">Monitor team activity and assignments</p>
         </div>
-        <Button className="bg-primary hover:bg-primary-light">
+        <Button className="bg-primary hover:bg-primary-light" onClick={() => toast({ title: "➕ Add member" })}>
           <Plus className="mr-2 h-4 w-4" />
           Add Team Member
         </Button>
@@ -139,7 +140,7 @@ export default function Team() {
         {filteredTeam.map((member) => (
           <Card
             key={member.id}
-            className="group cursor-pointer shadow-md transition-all hover:shadow-lg"
+            className="group cursor-pointer hover-lift hover-glow transition-all animate-slide-up"
           >
             <CardContent className="p-6">
               <div className="space-y-4">
@@ -194,11 +195,11 @@ export default function Team() {
 
                 {/* Actions */}
                 <div className="flex gap-2 pt-2">
-                  <Button variant="outline" size="sm" className="flex-1">
+                  <Button variant="outline" size="sm" className="flex-1" onClick={() => toast({ title: "👤 Viewing", description: member.name })}>
                     View Details
                   </Button>
                   {member.status === "pending" && (
-                    <Button size="sm" className="flex-1">
+                    <Button size="sm" className="flex-1" onClick={() => toast({ title: "✅ Assigned", description: member.name })}>
                       Assign
                     </Button>
                   )}

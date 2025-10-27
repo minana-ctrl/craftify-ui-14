@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Anchor, Languages } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -13,16 +14,20 @@ export default function Login() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/");
+    toast({
+      title: language === "en" ? "✅ Login successful" : "✅ Inicio de sesión exitoso",
+      description: language === "en" ? "Welcome back!" : "¡Bienvenido de nuevo!"
+    });
+    setTimeout(() => navigate("/"), 500);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-ocean p-4">
-      <Card className="w-full max-w-md shadow-elevated">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-ocean p-4 animate-fade-in">
+      <Card className="w-full max-w-md shadow-elevated hover-glow animate-slide-up">
         <CardHeader className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary">
+              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary shadow-glow">
                 <Anchor className="h-7 w-7 text-primary-foreground" />
               </div>
               <div>
@@ -33,7 +38,14 @@ export default function Login() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setLanguage(language === "en" ? "es" : "en")}
+              onClick={() => {
+                const newLang = language === "en" ? "es" : "en";
+                setLanguage(newLang);
+                toast({
+                  title: newLang === "en" ? "🌐 Language changed" : "🌐 Idioma cambiado",
+                  description: newLang === "en" ? "Switched to English" : "Cambiado a Español"
+                });
+              }}
               className="gap-1"
             >
               <Languages className="h-4 w-4" />
@@ -85,11 +97,19 @@ export default function Login() {
                   {language === "en" ? "Remember me" : "Recordarme"}
                 </label>
               </div>
-              <Button variant="link" className="px-0 text-sm" type="button">
+              <Button 
+                variant="link" 
+                className="px-0 text-sm" 
+                type="button"
+                onClick={() => toast({ 
+                  title: language === "en" ? "🔑 Password reset" : "🔑 Restablecer contraseña",
+                  description: language === "en" ? "Check your email for reset link" : "Revisa tu correo para el enlace"
+                })}
+              >
                 {language === "en" ? "Forgot password?" : "¿Olvidó su contraseña?"}
               </Button>
             </div>
-            <Button type="submit" className="w-full bg-primary hover:bg-primary-light" size="lg">
+            <Button type="submit" className="w-full bg-primary hover:bg-primary-light shadow-glow" size="lg">
               {language === "en" ? "Login" : "Iniciar sesión"}
             </Button>
           </form>

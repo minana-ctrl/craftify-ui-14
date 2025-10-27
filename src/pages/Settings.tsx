@@ -7,10 +7,11 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Bell, Lock, User, Globe, Palette, Upload } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 const Settings = () => {
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 animate-fade-in">
       <div>
         <h1 className="text-3xl font-bold text-foreground">Settings</h1>
         <p className="text-muted-foreground">Manage your account and preferences</p>
@@ -25,7 +26,7 @@ const Settings = () => {
         </TabsList>
 
         <TabsContent value="profile" className="space-y-4">
-          <Card>
+          <Card className="hover-glow animate-slide-up">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <User className="h-5 w-5" />
@@ -35,11 +36,15 @@ const Settings = () => {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center gap-6">
-                <Avatar className="h-24 w-24">
+                <Avatar className="h-24 w-24 ring-2 ring-primary/10">
                   <AvatarImage src="/placeholder.svg" />
                   <AvatarFallback className="text-2xl">DS</AvatarFallback>
                 </Avatar>
-                <Button variant="outline" className="gap-2">
+                <Button 
+                  variant="outline" 
+                  className="gap-2"
+                  onClick={() => toast({ title: "📸 Photo upload", description: "Select a new photo" })}
+                >
                   <Upload className="h-4 w-4" />
                   Change Photo
                 </Button>
@@ -64,13 +69,15 @@ const Settings = () => {
                 </div>
               </div>
 
-              <Button>Save Changes</Button>
+              <Button onClick={() => toast({ title: "✅ Profile updated", description: "Your changes have been saved" })}>
+                Save Changes
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="account" className="space-y-4">
-          <Card>
+          <Card className="hover-glow animate-slide-up">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Lock className="h-5 w-5" />
@@ -102,17 +109,22 @@ const Settings = () => {
                     <p className="font-medium">Two-Factor Authentication</p>
                     <p className="text-sm text-muted-foreground">Add an extra layer of security</p>
                   </div>
-                  <Switch />
+                  <Switch onCheckedChange={(checked) => toast({ 
+                    title: checked ? "🔐 2FA enabled" : "2FA disabled", 
+                    description: checked ? "Your account is more secure" : "Consider enabling 2FA" 
+                  })} />
                 </div>
               </div>
 
-              <Button>Update Password</Button>
+              <Button onClick={() => toast({ title: "🔒 Password updated", description: "Your password has been changed" })}>
+                Update Password
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="notifications" className="space-y-4">
-          <Card>
+          <Card className="hover-glow animate-slide-up">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Bell className="h-5 w-5" />
@@ -171,13 +183,15 @@ const Settings = () => {
                 </div>
               </div>
 
-              <Button>Save Preferences</Button>
+              <Button onClick={() => toast({ title: "🔔 Preferences saved", description: "Notification settings updated" })}>
+                Save Preferences
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="appearance" className="space-y-4">
-          <Card>
+          <Card className="hover-glow animate-slide-up">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Palette className="h-5 w-5" />
@@ -192,7 +206,10 @@ const Settings = () => {
                     <p className="font-medium">Dark Mode</p>
                     <p className="text-sm text-muted-foreground">Use dark theme throughout the app</p>
                   </div>
-                  <Switch />
+                  <Switch onCheckedChange={(checked) => toast({ 
+                    title: checked ? "🌙 Dark mode enabled" : "☀️ Light mode enabled",
+                    description: "Theme preference saved" 
+                  })} />
                 </div>
 
                 <Separator />
@@ -213,7 +230,9 @@ const Settings = () => {
                 </div>
               </div>
 
-              <Button>Save Appearance</Button>
+              <Button onClick={() => toast({ title: "🎨 Appearance saved", description: "Your preferences have been updated" })}>
+                Save Appearance
+              </Button>
             </CardContent>
           </Card>
         </TabsContent>

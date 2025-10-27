@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { FileText, DollarSign, Search, Filter, Download, Eye, Send } from "lucide-react";
 import { StatusBadge } from "@/components/StatusBadge";
+import { toast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 const Financials = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,7 +27,7 @@ const Financials = () => {
   ];
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-foreground">Financials</h1>
@@ -56,11 +58,11 @@ const Financials = () => {
                 className="pl-10"
               />
             </div>
-            <Button variant="outline" className="gap-2">
+            <Button variant="outline" className="gap-2" onClick={() => toast({ title: "Filter opened" })}>
               <Filter className="h-4 w-4" />
               Filter
             </Button>
-            <Button className="gap-2">
+            <Button className="gap-2" onClick={() => toast({ title: "✨ New quote created" })}>
               <FileText className="h-4 w-4" />
               New Quote
             </Button>
@@ -68,7 +70,7 @@ const Financials = () => {
 
           <div className="grid gap-4">
             {quotes.map((quote) => (
-              <Card key={quote.id} className="hover:shadow-md transition-shadow">
+              <Card key={quote.id} className="hover-lift hover-glow transition-all animate-slide-up">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="space-y-2">
@@ -85,13 +87,13 @@ const Financials = () => {
                         <p className="text-sm text-muted-foreground">{quote.date}</p>
                       </div>
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outline" onClick={() => toast({ title: "📄 Viewing quote" })}>
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outline" onClick={() => toast({ title: "⬇️ Downloaded" })}>
                           <Download className="h-4 w-4" />
                         </Button>
-                        <Button size="sm">
+                        <Button size="sm" onClick={() => toast({ title: "📧 Sent" })}>
                           <Send className="h-4 w-4" />
                         </Button>
                       </div>
