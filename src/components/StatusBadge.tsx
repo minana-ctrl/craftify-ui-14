@@ -54,7 +54,14 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
   const Icon = config.icon;
 
   return (
-    <Badge variant="outline" className={cn("gap-1.5 font-medium", config.color, className)}>
+    <Badge 
+      variant="outline" 
+      className={cn(
+        "gap-1.5 font-medium transition-all animate-scale-in",
+        config.color, 
+        className
+      )}
+    >
       <Icon className="h-3 w-3" />
       {config.label}
     </Badge>

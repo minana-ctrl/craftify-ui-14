@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   FolderKanban,
@@ -11,6 +11,7 @@ import {
   Anchor,
   Clock,
 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 import {
   Sidebar,
   SidebarContent,
@@ -42,12 +43,21 @@ const bottomNav = [
 
 export function AppSidebar() {
   const { open } = useSidebar();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    toast({ 
+      title: "👋 Logged out successfully", 
+      description: "See you next time!" 
+    });
+    setTimeout(() => navigate("/login"), 1000);
+  };
 
   return (
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
       <SidebarHeader className="border-b border-sidebar-border p-4">
-        <div className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sidebar-primary">
+        <div className="flex items-center gap-2 group cursor-pointer hover:opacity-80 transition-opacity" onClick={() => navigate("/")}>
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-sidebar-primary shadow-glow">
             <Anchor className="h-6 w-6 text-sidebar-primary-foreground" />
           </div>
           {open && (
@@ -72,8 +82,8 @@ export function AppSidebar() {
                       end={item.url === "/"}
                       className={({ isActive }) =>
                         isActive
-                          ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                          : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                          ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium shadow-sm"
+                          : "text-sidebar-foreground hover:bg-sidebar-accent/50 transition-all hover:translate-x-0.5"
                       }
                     >
                       <item.icon className="h-4 w-4" />
@@ -104,7 +114,11 @@ export function AppSidebar() {
           ))}
           <Separator className="my-2 bg-sidebar-border" />
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Logout" className="text-sidebar-foreground hover:bg-sidebar-accent/50">
+            <SidebarMenuButton 
+              tooltip="Logout" 
+              className="text-sidebar-foreground hover:bg-destructive/10 hover:text-destructive transition-all"
+              onClick={handleLogout}
+            >
               <LogOut className="h-4 w-4" />
               <span>Logout</span>
             </SidebarMenuButton>
